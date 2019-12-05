@@ -104,8 +104,12 @@ body{
     color: white;
 }
 .flex-row{
+    display: flex;
+    justify-content: space-around;
     flex-direction: row;
 }
 .flex-column{
+    display: flex;
+    justify-content: space-around;
     flex-direction: column;
 }
