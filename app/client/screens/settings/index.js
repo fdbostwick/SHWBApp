@@ -11,13 +11,11 @@ import {
     Text,
     StyleSheet,
     TouchableHighlight,
-    Image,
     SafeAreaView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ImagePicker from 'react-native-image-picker';
-import Slider from '@react-native-community/slider';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
@@ -36,7 +34,7 @@ let f2 = function (func) {
                     await AsyncStorage.setItem('@ProfilePicture', "file://" + response.path);
 
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             }
             setData();
@@ -49,7 +47,7 @@ let f3 = function (func) {
         try {
             await AsyncStorage.removeItem('@ProfilePicture')
         } catch (e) {
-            console.log(e);
+            //console.log(e);
         }
     }
     rem()

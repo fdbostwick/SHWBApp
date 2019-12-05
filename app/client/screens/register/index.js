@@ -56,7 +56,7 @@ export class RegisterScreen extends Component {
                 } 
                 else Alert.alert('Failed to register', result.message);
             })
-            .catch((error) => Alert.alert('Failed to register', error.message));
+            .catch((error) => Alert.alert('Failed to register', error.message));    
     }
 
     render() {
