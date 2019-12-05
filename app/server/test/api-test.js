@@ -75,17 +75,17 @@ it('Create Response Empty Test', function (done) {
     ).setHeader('X-ACCESS-TOKEN', "de64b7b0-0a77-11ea-901e-c3de7087d6a3");
 })
 
-// it('', function (done) {
-//     request('http://localhost:8888/api/', {method: 'GET'}, 
-//         function (error, response, body) {
-//             expect(body).to.not.equal(undefined);
-//             var jsonObj = JSON.parse(body);
-//             expect(jsonObj.success).to.not.equal(undefined);
-//             expect(jsonObj.success).to.equal(false);
-//             done();
-//         }
-//     )
-// })
+it('Reset user score test', function (done) {
+    request('http://localhost:8888/api/resetUserScores', {method: 'GET'}, 
+        function (error, response, body) {
+            expect(body).to.not.equal(undefined);
+            var jsonObj = JSON.parse(body);
+            expect(jsonObj.success).to.not.equal(undefined);
+            expect(jsonObj.success).to.equal(false);
+            done();
+        }
+    )
+})
 
 // it('', function (done) {
 //     request('http://localhost:8888/api/', {method: 'GET'}, 
