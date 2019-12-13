@@ -16,7 +16,7 @@ const UserAPI = {
                 UserAPI.setAccessToken(response.accessToken)
                 .then(() => resolve(response))
                 .catch((error) => {
-                    console.log(error);
+                    //console.log(error);
                     reject(error);
                 });
             })
@@ -28,8 +28,21 @@ const UserAPI = {
             if (!username || !password) {
                 return reject(Request.basicPacket(false, 6, 'Username and password cannot be empty'));
             }
-            if (!name) name = "";
-            if (!email) email = "";
+            if (username.length < 5 || username.length > 32){
+                return reject(Request.basicPacket(false, 6, 'Username must be 5 to 32 characters'));
+            }
+            if (!username.match(/^[a-zA-Z0-9]+$/)){
+                return reject(Request.basicPacket(false, 6, 'Username must start with a lowercase letter and contain only numbers and letters'));
+            } 
+            if (password.length < 6 || password.length > 32){
+                return reject(Request.basicPacket(false, 6, 'Password must be 6 to 32 characters'));
+            } 
+            if (!name) {
+                return reject(Request.basicPacket(false, 6, 'Name cannot be empty'));
+            } 
+            if (!email || !email.includes('@') || !email.includes('.')){
+                return reject(Request.basicPacket(false, 6, 'Email cannot be empty or invalid'));
+            }
             Request.createPostRequest('/register', JSON.stringify({
                 username: username,
                 password: password,
@@ -55,6 +68,13 @@ const UserAPI = {
             .catch((error) => reject(error));
         });
     },
+    resetUserScoresAsync(){
+        return new Promise (function (resolve, reject) {
+            Request.createPostRequest('/api/resetUserScores')
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        });
+    },
     getAccessToken() {
         return new Promise(function (resolve, reject) {
             AsyncStorage.getItem('AppAccessToken')
@@ -71,7 +91,7 @@ const UserAPI = {
     }
     ,  setAccessToken(accessToken) {
         return new Promise(function (resolve, reject) {
-            if (!accessToken) return reject(Request.basicPacket(false, 9, 'Token is undefined'));
+            //if (!accessToken) return reject(Request.basicPacket(false, 9, 'Token is undefined'));
             AsyncStorage.setItem('AppAccessToken', accessToken)
                 .then(() =>{
                     global.AppAccessToken = accessToken;

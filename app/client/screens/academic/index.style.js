@@ -4,7 +4,7 @@ export default StyleSheet.create({
         backgroundColor: 'rgb(244,244,244)',
         height: '100%',
         flexDirection: 'column',
-        padding: 20,
+        padding: 0,
         alignItems: "center",
         flex: 1
     },
@@ -12,11 +12,13 @@ export default StyleSheet.create({
         color: 'black',
         fontSize: 16,
         fontWeight: 'bold',
-        height: '15%',
+        height: '13%',
         width: '85%',
         justifyContent: "space-between",
         textAlign: "center",
-        textAlignVertical: "center"
+        textAlignVertical: "center",
+        // borderColor: 'black',
+        // borderWidth: 2
     },
     button: {
 		width: 260,

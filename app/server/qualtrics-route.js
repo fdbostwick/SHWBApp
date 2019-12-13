@@ -77,6 +77,7 @@ router.post('/api/createResponse', async function (req, res) {
     var accessToken = req.headers["x-access-token"];
     userRouter.getUsernameByAccessToken(accessToken, async function (errorPacket, username) {
         if (errorPacket) return res.end(JSON.stringify(errorPacket));
+        console.log(req.body);
         if (!req.body.idChoicePairs) return res.end(JSON.stringify(basicPacket(false, 15, "idChoicePairs cannot be empty")));
         var ipAddress = req.connection.remoteAddress.replace(/^.*:/, '');
         var idChoicePairs = req.body.idChoicePairs;

@@ -51,6 +51,7 @@ export default StyleSheet.create({
 		fontWeight: 'bold'
 	},
 	linkText: {
+		marginTop: '6%',
 		color: '#990000',
 		fontSize: 14,
 		textDecorationLine: 'underline',

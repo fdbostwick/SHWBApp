@@ -47,18 +47,6 @@ export default class CustomSidebarMenu extends Component {
                 key: 1
             },
             {
-                navOptionThumb: 'pencil',
-                navOptionName: 'Journal',
-                screenToNavigate: 'Journal',
-                key: 2
-            },
-            {
-                navOptionThumb: 'user',
-                navOptionName: 'Profile',
-                screenToNavigate: 'ProfileContainer',
-                key: 3
-            },
-            {
                 navOptionThumb: 'gears',
                 navOptionName: 'Settings',
                 screenToNavigate: 'Settings',
@@ -85,7 +73,7 @@ export default class CustomSidebarMenu extends Component {
                 <UserAvatar name={this.state.username ? this.state.username : 'Fred Flinstone'} size={100} color="#a00003" radius={.33}
                     src={this.props.screenProps.status.uri}
                 />
-                <Text style={{ fontSize: 20 }}>{this.state.username ? this.state.username : 'Fred Flinstone'}</Text>
+                <Text style={{ fontSize: 20, textAlign: "center", marginHorizontal: 5 }}>{this.state.username ? this.state.username : 'Fred Flinstone'}</Text>
                 {/*Divider between Top Image and Sidebar Option*/}
                 <View
                     style={{
@@ -109,6 +97,7 @@ export default class CustomSidebarMenu extends Component {
                                     this.props.navigation.navigate("Home");
                                 }
                                 else if (item.navOptionName == 'Log Out') {
+                                    UserAPI.setAccessToken("");
                                     this.props.screenProps.onLogOutPress()
                                 }
                                 else {

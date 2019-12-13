@@ -14,10 +14,8 @@ import {
     TouchableOpacity,
     TextInput,
 } from 'react-native';
-
 import styles from './index.style'
 import UserAPI from '../../api/user.api'
-import QualtricsAPI from '../../api/qualtrics.api'
 import ALogo from './logo'
 
 export class LoginScreen extends Component {
@@ -25,53 +23,45 @@ export class LoginScreen extends Component {
         super(props);
         this.state = {};
         this.state.ready = false;
-        
     }
     componentDidMount() {
         //this.setState({ ready: true });
         
-        this.setState({ username: 'hfang' });
-        this.setState({ password: '123456' });
-        // UserAPI.getAccessToken()
-        //     .then((accessToken) => {
-        //         // QualtricsAPI.getAllQuestionsAsync()
-        //         // .then((questions) => console.log(questions));
-        //         // if (accessToken) {
-        //         //     UserAPI.setAccessToken("");
-        //         //     this.props.navigation.navigate('Sample');
-        //         // }
-        //         // else {
-        //         //     this.setState({ ready: true });
-        //         // }
+        this.setState({ username: '' });
+        this.setState({ password: '' });
+        UserAPI.getAccessToken()
+            .then((accessToken) => {
+                if (accessToken) {
+                    this.props.screenProps.onLoginPress();
+                }
+                else {
+                    this.setState({ ready: true });
+                }
 
-        //     })
-        //     .catch((error) => console.log(error));
+            })
+            .catch((error) => this.setState({ ready: true }));
+        
     }
     loginAsync() {
         UserAPI.loginAsync(this.state.username, this.state.password)
             .then((result) => {
                 console.log(global.AppAccessToken);
-                // QualtricsAPI.getQuestionsFromBlockAsync("acad")
-                // .then((result) => QualtricsAPI.createResponseAsync({"QID192": 4, "QID204": 3}))
-                // .then((result) => console.log(result))
-                // .catch((error) => console.log(error));
                 if (result.success) this.props.screenProps.onLoginPress();
-                else Alert.alert('Faild To Login', result.message);
+                else Alert.alert('Failed To Login', result.message);
             })
-            .catch((error) => Alert.alert('Faild To Login', error.message));
+            .catch((error) => Alert.alert('Failed To Login', error.message));
     }
     registerAsync() {
         UserAPI.registerAsync(this.state.username, this.state.password, this.state.name, this.state.email)
             .then((result) => {
                 if (result.success) this.props.onLoginPress();
-                else Alert.alert('Faild to register', result.message);
+                else Alert.alert('Failed to register', result.message);
             })
-            .catch((error) => Alert.alert('Faild to register', error.message));
+            .catch((error) => Alert.alert('Failed to register', error.message));
     }
 
     render() {
-        //if (!this.state.ready) return null;
-        console.log(this)
+        if (!this.state.ready) return null;
         return (
                 <View style={styles.mainContainer}>
                     <View style={{ width: '35%', height: '35%', alignContent: 'center', flexDirection: 'column', alignSelf: 'center' }}>
@@ -92,12 +82,8 @@ export class LoginScreen extends Component {
                         onPress={() => this.loginAsync()}>
                         <Text style={styles.loginButtonText}>Sign In</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.buttonContainer, styles.demoButton]}
-                        onPress={() => this.props.onLoginPress()}>
-                        <Text style={styles.loginButtonText}>Sign In</Text>
-                    </TouchableOpacity>
-                    <Text onPress={() => this.props.navigation.navigate('Register')} style={styles.linkText}>New to SHWB? Register here</Text>
+                    
+                    <Text onPress={() => this.props.navigation.navigate('Register')} hf  style={styles.linkText}>New to SHWB? Register here</Text>
                 </View>
         );
     }

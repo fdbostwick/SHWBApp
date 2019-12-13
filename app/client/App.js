@@ -1,8 +1,6 @@
-import React, { createContext } from 'react';
-import {
-    createSwitchNavigator,
-    createAppContainer,
-} from 'react-navigation';
+import React, {Component} from 'react';
+import {createSwitchNavigator, createAppContainer, NavigationEvents} from 'react-navigation';
+import {Alert} from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from './screens/login/index'
 import RegisterScreen from './screens/register/index'
@@ -11,7 +9,7 @@ import StackNav from './mainComponents/stackHeaderState'
 import SplashScreen from './screens/splash/index';
 global.AppAccessToken = null;
 
-const AuthStack = createAppContainer(createStackNavigator({
+export const AuthStack = createStackNavigator({
     Login: { screen: LoginScreen },
     Register: { screen: RegisterScreen },
 },
@@ -21,109 +19,122 @@ const AuthStack = createAppContainer(createStackNavigator({
             headerVisible: false,
         },
         initialRouteName: 'Login'
-}));
+});
+
+export const Auth = createAppContainer(AuthStack);
 // const ProfileContainerState = createAppContainer(ProfileNavigator);
 
-class App extends React.Component {
+class App extends Component {
     constructor(props) {
         super(props);
+        this.updateDarkMode = this.updateDarkMode.bind(this);
+        this.logIn = this.logIn.bind(this);
+        this.logOut = this.logOut.bind(this);
         this.state = {
             darkMode: 'false',
-            loggedIn: null
+            loggedIn: null,
+            mounting: true,
         }
     }
     componentDidMount() {
         getMode = async () => {
             try {
-                const value = await AsyncStorage.getItem('@DarkMode');
-                console.log("Darkmode is")
-                console.log(value)
-                if (value === null) {
+                value = await AsyncStorage.getItem('@DarkMode');
+                //Alert.alert("Darkmode is " + value)
+                if (value !== null) {
                     this.updateDarkMode(value);
-                } else {
-                    this.setState({ darkMode: value })
                 }
             } catch (error) {
                 console.log(error);
             }
         }
+
         getMode();
+        
         getLogin = async () => {
             try {
-                const value = await AsyncStorage.getItem('@LoggedIn');
-                if (true || value === null) {
+                value = await AsyncStorage.getItem('@LoggedIn');
+                //Alert.alert("Logged in: " + value);
+                if (value === null) {
                     this.setState({loggedIn: false});
                 } else {
-                    this.setState({ loggedIn: value == 'true' ? true : false })
+                    this.setState({ loggedIn: value === 'true' ? true : false })
                 }
             } catch (error) {
                 console.log(error);
             }
         }
+
         getLogin();
+        this.setState({mounting: false});
     }
+
     updateDarkMode(val) {
         this.setState({ darkMode: val })
-        console.log("New value: " + val)
-        const setData = async () => {
+        //Alert.alert("New value: " + val)
+        setData = async () => {
             try {
                 await AsyncStorage.setItem('@DarkMode', val);
+                //Alert.alert("setting dark mode");
             } catch (error) {
-                console.log(error);
+                //Alert.alert(error);
             }
-        }
-        setData();
+        };
     }
+
     logOut() {
-        this.setState({ loggedIn: false });
-        const setLogin = async () => {
+        setLogin = async () => {
             try {
                 await AsyncStorage.setItem('@LoggedIn', 'false');
             } catch (error) {
                 console.log(error);
             }
-        }
-        setLogin();
+        };
+        
+        this.setState({ loggedIn: false });
     }
+
     logIn() {
         this.setState({ loggedIn: true });
-        const setLogin = async () => {
+        setLogin = async () => {
             try {
                 await AsyncStorage.setItem('@LoggedIn', 'true');
             } catch (error) {
                 console.log(error);
             }
-        }
-        setLogin();
+        };
     }
+
     render() {
-        if (this.state.loggedIn == true) {
-            return (
-                <StackNav
-                    screenProps={{
-                        darkMode: this.state.darkMode, updateDarkMode: this.updateDarkMode.bind(this),
-                        ...this.props.screenProps,
-                        onLogOutPress: this.logOut.bind(this)
-                    }}
-                />
-            )
-        } else if (this.state.loggedIn == false){
-            return (
-                <AuthStack
-                    screenProps={{onLoginPress: this.logIn.bind(this)}}
-                    // onLoginPress={this.logIn.bind(this)}
-                />
-            )
-        } else {
+        if(this.state.mounting){
             return (
                 <SplashScreen />
-            )
+            );
+        }else{
+            if (this.state.loggedIn === true) {
+                return (
+                    <StackNav
+                        screenProps={{
+                            darkMode: this.state.darkMode, 
+                            updateDarkMode: this.updateDarkMode.bind(this),
+                            ...this.props.screenProps,
+                            onLogOutPress: this.logOut.bind(this)
+                        }}
+                    />
+                );
+            } else if (this.state.loggedIn === false){
+                return (
+                    <Auth  
+                        screenProps={{onLoginPress: this.logIn.bind(this)}}
+                        // onLoginPress={this.logIn.bind(this)}
+                    />                   
+                );
+            } else {
+                return (
+                    <SplashScreen />
+                );
+            }
         }
-        // return (
-        //     <Wrapper
-        //         screenProps={{ darkMode: this.state.darkMode, updateDarkMode: this.updateDarkMode.bind(this), ...this.props.screenProps }}
-        //     />
-        // );
     }
 }
 export default App;

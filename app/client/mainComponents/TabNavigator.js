@@ -11,11 +11,9 @@ import { createStackNavigator } from 'react-navigation-stack';
 import {
     createAppContainer,
 } from 'react-navigation';
+import ResourceScreen from '../screens/resources/index';
 
-
-
-const ProfileNavigator = createStackNavigator({
-    Profile: { screen: ProfileScreen },
+const AcademicStack = createAppContainer(createStackNavigator({
     Academic: { screen: AcademicScreen },
 },
     {
@@ -23,9 +21,9 @@ const ProfileNavigator = createStackNavigator({
         navigationOptions: {
             headerVisible: false,
         },
-        initialRouteName: 'Profile'
-});
-const ProfileContainerState = createAppContainer(ProfileNavigator);
+        initialRouteName: 'Academic'
+}));
+// const someting = createAppContainer(ProfileNavigator);
 // class ProfileContainerState extends React.Component {
 //     static router = ProfileContainer.router;
 //     constructor(props) {
@@ -44,7 +42,7 @@ const ProfileContainerState = createAppContainer(ProfileNavigator);
 const AppNavigator = createBottomTabNavigator(
     {
         ProfileContainer: {
-            screen: ProfileContainerState,
+            screen: ProfileScreen,
             navigationOptions: {
                 tabBarLabel: ({ tintColor }) => (
                     <Text style={{ fontSize: 13, color: tintColor, textAlign: 'center' }}>
@@ -56,7 +54,7 @@ const AppNavigator = createBottomTabNavigator(
             }
         },
         Survey: {
-            screen: SurveyScreen,
+            screen: AcademicScreen,
             navigationOptions: {
                 tabBarLabel: ({ tintColor }) => (
                     <Text style={{ fontSize: 13, color: tintColor, textAlign: 'center' }}>
@@ -80,15 +78,15 @@ const AppNavigator = createBottomTabNavigator(
             }
         },
         Resources: {
-            screen: ProfileScreen,
+            screen: ResourceScreen,
             navigationOptions: {
                 tabBarLabel: ({ tintColor }) => (
                     <Text style={{ fontSize: 13, color: tintColor, textAlign: 'center' }}>
-                        {'Resouces'}
+                        {'Resources'}
                     </Text>
                 ),
                 tabBarIcon: ({ horizontal, tintColor }) =>
-                    <Icon name="gears" size={horizontal ? 20 : 25} color={tintColor} />
+                    <Icon name="university" size={horizontal ? 20 : 25} color={tintColor} />
             }
         },
         Journal: {

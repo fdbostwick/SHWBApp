@@ -26,13 +26,12 @@ export class RegisterScreen extends Component {
         super(props);
         this.state = {};
         this.state.ready = false;
-        
     }
     componentDidMount() {
         //this.setState({ ready: true });
         
-        this.setState({ username: 'hfang' });
-        this.setState({ password: '123456' });
+        this.setState({ username: '' });
+        this.setState({ password: '' });
         // UserAPI.getAccessToken()
         //     .then((accessToken) => {
         //         // QualtricsAPI.getAllQuestionsAsync()
@@ -55,14 +54,14 @@ export class RegisterScreen extends Component {
                     this.props.screenProps.onLoginPress();
                     //StackActions.reset()
                 } 
-                else Alert.alert('Faild to register', result.message);
+                else Alert.alert('Failed to register', result.message);
             })
-            .catch((error) => Alert.alert('Faild to register', error.message));
+            .catch((error) => Alert.alert('Failed to register', error.message));    
     }
 
     render() {
         //if (!this.state.ready) return null;
-        console.log(this)
+        
         return (
                 <View style={styles.mainContainer}>
                     <View style={{ width: '35%', height: '35%', alignContent: 'center', flexDirection: 'column', alignSelf: 'center' }}>
@@ -93,11 +92,7 @@ export class RegisterScreen extends Component {
                         onPress={() => this.registerAsync()}>
                         <Text style={styles.loginButtonText}>Register</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.buttonContainer, styles.demoButton]}
-                        onPress={() => this.props.screenProps.onLoginPress()}>
-                        <Text style={styles.loginButtonText}>Sign In</Text>
-                    </TouchableOpacity>
+                    
                 </View>
         );
     }
