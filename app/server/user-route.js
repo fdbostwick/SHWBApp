@@ -108,13 +108,14 @@ router.get('/api/getUserInfo', function (req, res) {
             successPacket.email = user.email;
             global.userDataDB.findOne({username: username}, function (error, userData) {
                 if (error) return res.end(JSON.stringify(basicPacket(false, 16, "failed to read database")));
+                if (userData.scores == undefined || userData.scores["soc"] == undefined) userData.scores = initializeUserScores();
                 successPacket.scores = userData.scores;
                 res.end(JSON.stringify(successPacket));
             });
         });
     })
 });
-router.get('/api/resetUserScores', function (req, res) {
+router.post('/api/resetUserScores', function (req, res) {
     var accessToken = req.headers["x-access-token"];
     exports.getUsernameByAccessToken(accessToken, function (errorPacket, username) {
         if (errorPacket) return res.end(JSON.stringify(errorPacket));

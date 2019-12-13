@@ -45,6 +45,7 @@ const qualtricsRouter = require("./qualtrics-route");
 app.post('/login', userRouter.router);
 app.post('/register', userRouter.router);
 app.get('/api/getUserInfo', userRouter.router);
+app.post('/api/resetUserScores', userRouter.router);
 app.get('/api/getAllQuestions', qualtricsRouter);
 app.get('/api/getQuestionsFromBlock/:blockName', qualtricsRouter);
 app.post('/api/createResponse', qualtricsRouter);
